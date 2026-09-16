@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 umask 077
 readonly repo=tonyramosyt-cyber/gamerhash-linux-installer
-readonly tag=demo-0.1.0-20260914
+readonly tag=demo-0.1.0-20260916-createfix
 readonly key_sha=03a80b518ffb3e5719dcd4ade14f34ed8b8c864bcdebb29c4ea98ea1c61e3cb8
 die() { printf 'Public installation: %s\n' "$*" >&2; exit 1; }
 [[ $EUID != 0 ]] || die 'Run as your ordinary desktop user, not root. sudo will be requested for system changes only.'
@@ -53,7 +53,7 @@ done < "$cache/SHA256SUMS"
 for required in RELEASE.json install-gamerhash-linux.sh prepare-host.sh ghlinux-models gamerhash-linux_0.1.0_amd64.deb gamerhash-linux_0.1.0_amd64.deb.sha256; do
   [[ " ${files[*]} " == *" $required "* ]] || die "Signed release is missing $required."
 done
-jq -e --arg tag "$tag" '.schema == 1 and .tag == $tag and .os == "ubuntu-24.04-amd64" and .packageVersion == "0.1.0"' "$cache/RELEASE.json" >/dev/null || die 'Release identity or supported platform mismatch.'
+jq -e --arg tag "$tag" '.schema == 1 and .tag == $tag and .os == "ubuntu-24.04-amd64" and .packageVersion == "0.1.0+mig3"' "$cache/RELEASE.json" >/dev/null || die 'Release identity or supported platform mismatch.'
 expiry=$(jq -r .expiresUtc "$cache/RELEASE.json")
 created=$(jq -r .createdUtc "$cache/RELEASE.json")
 [[ $(date -u -d "$created" +%s) -le $(date -u +%s) && $(date -u +%s) -lt $(date -u -d "$expiry" +%s) ]] || die 'Release expired or system clock is wrong. Obtain a newly signed release; do not bypass verification.'

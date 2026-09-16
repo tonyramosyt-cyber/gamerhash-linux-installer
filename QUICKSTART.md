@@ -3,6 +3,10 @@
 This is an independently developed GamerHash Linux demonstration beta, not an
 official GamerHash Linux product. Public downloads require no GitHub account.
 
+This command installs package `0.1.0+mig3`. It adds the RTX Pro
+MIG-disabled/64+ GiB admission repair and prevents earning-only Wan Animate and
+video upscalers from being offered as unsupported local Create operations.
+
 ## 1. Check your machine
 
 - Ubuntu **24.04 LTS Desktop**, Intel/AMD 64-bit (`amd64` / `x86_64`), installed
@@ -64,8 +68,8 @@ test "$ID:$VERSION_ID:$(uname -m)" = "ubuntu:24.04:x86_64" || { echo "Only Ubunt
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl
 d=$(mktemp -d)
-curl --fail --location --proto "=https" --proto-redir "=https" --tlsv1.2 --retry 3 --connect-timeout 20 --max-time 180 -o "$d/install-public.sh" https://github.com/tonyramosyt-cyber/gamerhash-linux-installer/releases/download/demo-0.1.0-20260914/install-public.sh
-printf "%s  %s\n" e35dacab2a3c23e58a785451425e7cc41b11574c9637c4ed301b97619d9c9491 "$d/install-public.sh" | sha256sum -c -
+curl --fail --location --proto "=https" --proto-redir "=https" --tlsv1.2 --retry 3 --connect-timeout 20 --max-time 180 -o "$d/install-public.sh" https://github.com/tonyramosyt-cyber/gamerhash-linux-installer/releases/download/demo-0.1.0-20260916-createfix/install-public.sh
+printf "%s  %s\n" 008fc575bfa1a5b494ec92c9f7d6f2c0d78a4bdd949ec85f02c70d6302e61d94 "$d/install-public.sh" | sha256sum -c -
 bash "$d/install-public.sh"
 '
 ```
@@ -138,6 +142,11 @@ question. Then choose Image/Sana and generate a small image. Open the result in
 **Create → Gallery** and export it using the native save dialog. Local Create
 temporarily owns the GPU and pauses earning while it runs.
 
+Only models and operations admitted for local Create appear in each family.
+Wan2.2 Animate, FlashVSR Tiny and RealESRGAN Video x2/x4 are earning-only in the
+pinned client and are intentionally absent from the local Video picker. Installing
+them does not add a local Wan animation workflow.
+
 To preview a full compatible installation plan, then explicitly request it:
 
 ```bash
@@ -172,6 +181,13 @@ machine may be AI READY without being AI OPTIMAL or approved to earn. Earning
 support never guarantees a paid assignment. Compatible local Create remains
 separate. Laptop battery, games/competing GPU work, unsafe temperature and local
 Create can pause earning. Authentication expiry requires human login again.
+
+The September 16 RTX Pro observation reached signed-in Ready with 26 recommended
+earning models, seven LoRAs, zero skipped requirements and active vendor network
+traffic, but received zero jobs. The local logs did not show an authentication,
+version or requirements rejection. That cannot distinguish no marketplace
+assignment from silent vendor-side filtering, and it must not be treated as an
+earnings guarantee. See VALIDATION.md for the precise evidence.
 
 ## 7. Status, recovery, upgrade and uninstall
 
@@ -224,6 +240,10 @@ Linux distributions are not supported by this release. The tested host used an
 X11 desktop session; no blanket Wayland/compositor qualification is claimed.
 If rendering/browser launch fails, first confirm Firefox opens normally and the
 desktop has a default browser; do not disable its sandbox.
+
+The bundled vendor generation is pinned to 0.85.4. Newer Windows releases exist,
+but the current zero-job observation produced no `OldVersion` response; version
+age is a hypothesis, not a proven earning failure.
 
 The public installer may be withdrawn; copies already downloaded cannot be
 recalled. This signed release expires December 31, 2026 UTC. Its public availability

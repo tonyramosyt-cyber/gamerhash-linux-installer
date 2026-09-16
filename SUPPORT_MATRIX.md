@@ -17,6 +17,27 @@ usable memory and the signed profile determine local admission; live vendor
 decisions remain authoritative. Marketplace approval and job availability are
 separate from local Create support. Other distributions remain Planned.
 
+## September 16 RTX Pro maintenance evidence
+
+The `0.1.0+mig3` maintenance revision was exercised on Ubuntu 24.04 with a single
+RTX PRO 6000 Blackwell Server Edition (96 GB VRAM), approximately 141 GiB RAM and
+NVIDIA 580.126.16. MIG current/pending Disabled was correctly treated as a full
+GPU, and observed RAM above 64 GiB preserved vendor model states. This is focused
+admission/Create evidence, not a new boundary-profile qualification or a repeated
+model matrix.
+
+All 59 catalog models and seven shared modules were installed on that host. The
+corrected local Video catalog excludes earning-only Wan Animate, FlashVSR and
+video RealESRGAN routes. A direct unsupported Wan local request was rejected
+before GPU ownership and did not disable earning. Wan subsequently loaded as the
+vendor-selected earning worker and reached Ready.
+
+The earning client advertised 26 recommended models plus seven LoRAs with zero
+skipped requirements and remained authenticated/connected, but received zero
+paid assignments during the observation. That result is **not** a promise of
+earnings and does not reclassify marketplace availability. The earlier RTX 3090
+paid-job completion remains the only recorded paid-job proof in this matrix.
+
 ## Retained per-model evidence — 2026-09-11
 
 This is the release classification for every model in the pinned 59-model
@@ -85,7 +106,7 @@ not override it. `Known issue` is a reproducible RTX 3090 failure.
 | `model:sanasprint16b1024` | Image | Passed | Real exact-12-GB 256 px PNG; GPU released |
 | `model:starwarsfluxlora` | Image LoRA | Passed | Real exact-12-GB LoRA PNG; GPU released |
 | `model:studioghiblistylefluxlora` | Image LoRA | Passed | Real exact-12-GB LoRA PNG; GPU released |
-| `model:wan2_2_animate_14b_int8` | Earning-only video | Vendor unavailable | Live vendor state `min_requirements` |
+| `model:wan2_2_animate_14b_int8` | Earning-only video | Vendor unavailable | RTX 3090 live state `min_requirements`; RTX Pro worker reached Ready but received no job |
 | `model:whisperlargev3` | Transcription | Known issue | Two clean attempts timed out; worker required service recovery |
 | `model:whisperlargev3ct2` | Transcription | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:zanimedistill_8step_int8` | Image | Passed | Real PNG; GPU released |
