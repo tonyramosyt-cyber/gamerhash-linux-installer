@@ -17,26 +17,30 @@ usable memory and the signed profile determine local admission; live vendor
 decisions remain authoritative. Marketplace approval and job availability are
 separate from local Create support. Other distributions remain Planned.
 
-## September 16 RTX Pro maintenance evidence
+## Focused earning-stability evidence — 2026-09-16–17
 
-The `0.1.0+mig3` maintenance revision was exercised on Ubuntu 24.04 with a single
-RTX PRO 6000 Blackwell Server Edition (96 GB VRAM), approximately 141 GiB RAM and
-NVIDIA 580.126.16. MIG current/pending Disabled was correctly treated as a full
-GPU, and observed RAM above 64 GiB preserved vendor model states. This is focused
-admission/Create evidence, not a new boundary-profile qualification or a repeated
-model matrix.
+This table keeps local runtime proof separate from marketplace proof. A local
+earning-runtime pass invokes the real installed worker without contacting vendor
+job-result or payment endpoints; it is not presented as a paid job.
 
-All 59 catalog models and seven shared modules were installed on that host. The
-corrected local Video catalog excludes earning-only Wan Animate, FlashVSR and
-video RealESRGAN routes. A direct unsupported Wan local request was rejected
-before GPU ownership and did not disable earning. Wan subsequently loaded as the
-vendor-selected earning worker and reached Ready.
+| Model / path | Evidence class | Result |
+| --- | --- | --- |
+| Qwen Image Edit Plus NF4 | Real marketplace job credited; local earning-runtime operation passed | Three baseline jobs completed and were credited. After the safe-boundary repair, five of five minimal sequential local image-edit operations produced valid PNGs and released GPU ownership. |
+| WhisperLargeV3 | Real marketplace job credited | Two read-only baseline assignments and one post-fix assignment completed and were credited. The post-fix job moved pending GUSD from 0.00516934 to 0.00618997 over three billable seconds. This does not erase the separate RTX 3090 local-Create timeout classification below. |
+| RealESRGAN Video x2 | Local earning-runtime operation passed; marketplace assignment not observed | The official installed runtime produced a valid 64x64 MP4 from a one-frame fixture, left no orphan, and returned GPU memory to baseline. |
+| RealESRGAN Video x4 | Local earning-runtime operation passed; earlier marketplace assignments failed before repair | The official installed runtime produced a valid 128x128 MP4, left no orphan, and returned GPU memory to baseline. The two earlier marketplace failures were interrupted by the repaired ordinary competing-GPU pause. No post-fix x4 assignment arrived in the bounded window. |
+| FlashVSR Tiny | Local earning-runtime operation passed; marketplace assignment not observed | The official installed runtime produced a valid 64x64 MP4, left no orphan, and returned GPU memory to baseline. |
+| BGE-M3 | Local earning-runtime operation passed; marketplace assignment not observed | The official CUDA-backed runtime returned one 1,024-dimensional finite embedding, left no listener/orphan, and returned GPU memory to baseline. |
+| Wan2.2 Animate | Host-ineligible; not tested | The focused RTX 4090 host exposed approximately 59.2 GiB effective RAM, below the signed 64 GiB requirement. The model was not installed or forced. |
+| Create / earning ownership | Focused transition passed | Create waited for a vendor Ready/Idle boundary, acquired the GPU without interrupting paid work, and earning resumed afterward. |
+| Service restart | Focused recovery passed | Authentication, settings, installed models, earning intent, and healthy service state persisted across one restart. |
 
-The earning client advertised 26 recommended models plus seven LoRAs with zero
-skipped requirements and remained authenticated/connected, but received zero
-paid assignments during the observation. That result is **not** a promise of
-earnings and does not reclassify marketplace availability. The earlier RTX 3090
-paid-job completion remains the only recorded paid-job proof in this matrix.
+The observed root cause was not an intrinsic Qwen or video-runtime failure.
+Linux's ordinary competing-GPU policy stopped the vendor process during startup
+or generation. The repair latches ordinary contention until Ready/Idle while
+retaining immediate stops for temperature, driver, storage, and other
+hardware-safety faults. Pinned-runtime version drift was reviewed and was not
+causal, so no vendor component was upgraded speculatively.
 
 ## Retained per-model evidence — 2026-09-11
 
@@ -58,13 +62,13 @@ not override it. `Known issue` is a reproducible RTX 3090 failure.
 | `model:acestep_1_5_xl_turbo_int8` | Music | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:astroghxstylefluxschnelllora` | Image LoRA | Passed | Real exact-12-GB LoRA PNG; GPU released |
 | `model:ben2` | Background removal | Known issue | Two clean attempts timed out; worker required service recovery |
-| `model:bge_m3_fp16` | Earning-only embedding | Passed | Unchanged worker-startup baseline; live-compatible |
+| `model:bge_m3_fp16` | Earning-only embedding | Passed | Real local CUDA embedding operation returned 1,024 finite dimensions; GPU released; no marketplace assignment observed |
 | `model:bielik_v3_4_5b_q8` | Chat | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:chatterbox` | TTS | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:deepseek_r1_distill_qwen_14b_q5_k_m` | Chat | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:deepseek_r1_distill_qwen_1_5b_q5_k_m` | Chat | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:deepseek_r1_distill_qwen_7b_q5_k_m` | Chat | Passed | Unchanged full-matrix baseline; live-compatible |
-| `model:flashvsr_tiny` | Earning-only video upscale | Passed | Installed; unchanged worker-startup baseline |
+| `model:flashvsr_tiny` | Earning-only video upscale | Passed | Real local short-video operation produced valid MP4; GPU released; no marketplace assignment observed |
 | `model:flux1dev` | Image | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:flux1schnell` | Image | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:flux_2_klein_4b_bf16` | Image | Passed | Real 768 px PNG; earning worker and real paid job used GPU path |
@@ -96,9 +100,9 @@ not override it. `Known issue` is a reproducible RTX 3090 failure.
 | `model:qwen_3_8b_q4_k_m` | Chat | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:qwenimage_plus2_nf4` | Image | Passed | Real PNG after one automatic supervisor recovery |
 | `model:qwenimageedit_plus2_nf4` | Image edit | Passed | Real PNG from fixture input; GPU released |
-| `model:qwenimageedit_plus_nf4` | Image edit | Passed | Real 1024 px PNG from fixture input; GPU released |
-| `model:realesrgan_vid_x2` | Earning-only video upscale | Passed | Installed; unchanged worker-startup baseline |
-| `model:realesrgan_vid_x4` | Earning-only video upscale | Passed | Installed; unchanged worker-startup baseline |
+| `model:qwenimageedit_plus_nf4` | Image edit | Passed | Three real marketplace jobs credited; focused local acceptance passed five of five sequential edits; valid PNGs and GPU release |
+| `model:realesrgan_vid_x2` | Earning-only video upscale | Passed | Real local short-video operation produced valid 64x64 MP4; GPU released; no marketplace assignment observed |
+| `model:realesrgan_vid_x4` | Earning-only video upscale | Passed | Real local short-video operation produced valid 128x128 MP4; GPU released; earlier marketplace failures traced to repaired Linux stop policy |
 | `model:realesrgan_x2` | Image upscale | Passed | Real 1024 px PNG and verified Gallery export; GPU released |
 | `model:realesrgan_x4` | Image upscale | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:sana16b1024` | Image | Passed | Real exact-12-GB 1024 px PNG; GPU released |
@@ -106,8 +110,8 @@ not override it. `Known issue` is a reproducible RTX 3090 failure.
 | `model:sanasprint16b1024` | Image | Passed | Real exact-12-GB 256 px PNG; GPU released |
 | `model:starwarsfluxlora` | Image LoRA | Passed | Real exact-12-GB LoRA PNG; GPU released |
 | `model:studioghiblistylefluxlora` | Image LoRA | Passed | Real exact-12-GB LoRA PNG; GPU released |
-| `model:wan2_2_animate_14b_int8` | Earning-only video | Vendor unavailable | RTX 3090 live state `min_requirements`; RTX Pro worker reached Ready but received no job |
-| `model:whisperlargev3` | Transcription | Known issue | Two clean attempts timed out; worker required service recovery |
+| `model:wan2_2_animate_14b_int8` | Earning-only video | Vendor unavailable | RTX 3090 live vendor state `min_requirements`; focused RTX 4090 host was also locally ineligible at 59.2 GiB effective RAM versus the signed 64 GiB requirement |
+| `model:whisperlargev3` | Transcription | Known issue | RTX 3090 local Create timed out; separately, three real marketplace assignments completed and were credited on the focused RTX 4090 worker |
 | `model:whisperlargev3ct2` | Transcription | Passed | Unchanged full-matrix baseline; live-compatible |
 | `model:zanimedistill_8step_int8` | Image | Passed | Real PNG; GPU released |
 | `model:zimageturbo_int8` | Image | Passed | Real PNG; GPU released |

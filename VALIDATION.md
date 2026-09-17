@@ -1,5 +1,51 @@
 # Validation and limits
 
+## September 17 safe-boundary earning revision
+
+The package version is `0.1.0+mig4`; the release tag is
+`demo-0.1.0-20260917-earning-stability`. The final `.deb` SHA-256 is
+`dd138c1630a5bb4c1b98399e6704ec4af0a5c11a3041fe9bbd45d0eae8665612`.
+Its signed release manifest authenticates this exact artifact.
+
+The focused investigation preserved redacted evidence from six initial real
+marketplace assignments. Three Qwen Image Edit Plus NF4 jobs completed and were
+credited; two RealESRGAN Video x4 jobs and a later Qwen job were interrupted.
+Two subsequent WhisperLargeV3 assignments also completed and were credited
+while the investigation was still read-only. No kernel OOM, NVIDIA Xid, GPU
+reset, or systemd restart occurred in the failure window.
+
+The root cause was Linux's ordinary competing-GPU pause stopping the vendor
+runtime during startup or generation. It was not an intrinsic Qwen or video
+runtime failure. The repair latches ordinary competing-GPU, battery, and network
+pauses until vendor Ready/Idle, and makes local Create/Chat wait for that safe
+boundary before taking ownership. Temperature, driver, storage, and other
+hardware-safety faults remain immediate. No GPU-name or RTX-SKU exception was
+introduced.
+
+Focused acceptance on the existing Ubuntu 24.04 RTX 4090 host passed:
+
+- Qwen Image Edit Plus NF4: five of five minimal sequential operations, valid
+  PNG output, healthy service, GPU released.
+- RealESRGAN Video x2/x4 and FlashVSR Tiny: one real installed-runtime operation
+  each, valid MP4 output, no orphan, GPU returned to baseline.
+- BGE-M3: one real CUDA-backed 1,024-dimensional finite embedding, no
+  orphan/listener, GPU returned to baseline.
+- Create-versus-earning ownership transition and one service restart:
+  authentication, models, settings, earning intent, and service health
+  persisted.
+- One post-fix WhisperLargeV3 marketplace assignment completed and was credited,
+  moving pending GUSD from 0.00516934 to 0.00618997 over three billable seconds.
+
+Wan2.2 Animate was not installed or forced on this host because its approximately
+59.2 GiB effective RAM was below the signed 64 GiB model requirement. Local
+probes never contacted vendor result or payment endpoints. Job IDs, account
+data, prompts, inputs, outputs, and tokens are excluded from release evidence.
+
+Pinned-runtime drift was reviewed rather than upgraded blindly. The installed
+video 0.8.2 runtime passed all three focused local video operations; captured
+failures coincide with explicit Linux stop requests. The newer Windows video
+runtime is therefore not required to explain or correct this defect.
+
 ## September 16 Create-admission maintenance revision
 
 Package `0.1.0+mig3` combines the RTX Pro MIG-disabled and 64+ GiB RAM
@@ -43,7 +89,7 @@ new clean-install run or a repeated 59-model matrix. The assembled `mig3` DEB,
 signed manifest, scripts and checksums received package/static verification; the
 complete new public command has not been rerun on another clean GPU machine.
 
-## Current earning evidence — zero paid jobs
+## Retained RTX Pro waiting observation
 
 The RTX PRO 6000 worker is signed in, earning enabled and Ready, with 59/59
 installed catalog models, seven installed LoRAs and Wan loaded. The vendor
@@ -52,18 +98,16 @@ requirements. Two TLS connections to `api.deapi.ai` exchanged traffic, and no
 authentication, version, rate-limit, rejection, crash or timeout error appeared
 after Ready.
 
-No offer negotiation, generation, upload or payment acknowledgement was observed;
-session job and earning counters remained zero. This means the local client is
-healthy enough to wait for work, but it does **not** prove marketplace demand,
-vendor-side routing/approval, or paid-job completion. A paid assignment cannot
-be manufactured by the installer. Vendor-side dispatch records or a controlled
-same-machine comparison with the current official Windows client would be needed
-to distinguish no available assignment from silent vendor-side filtering.
+No offer negotiation, generation, upload or payment acknowledgement was observed
+on that separate RTX Pro host; its session job and earning counters remained
+zero. This older observation is retained because Ready does not prove marketplace
+demand or routing. It does not conflict with the separately proven credited RTX
+4090 and RTX 3090 jobs, and none of these observations guarantees future work.
 
-The bundled vendor generation remains pinned to 0.85.4. GamerHash has published
-newer Windows versions, but this observation contained no `OldVersion` response
-or other definitive evidence that 0.85.4 was rejected. Version age is therefore
-a hypothesis, not the stated cause of zero earnings.
+The bundled vendor generation remains pinned to 0.85.4. The focused failure
+signatures were explained by Linux stop requests, and the installed runtimes
+passed their focused local operations, so vendor components were not upgraded
+without causal evidence.
 
 ## Prior fresh installation and login evidence
 

@@ -3,9 +3,10 @@
 This is an independently developed GamerHash Linux demonstration beta, not an
 official GamerHash Linux product. Public downloads require no GitHub account.
 
-This command installs package `0.1.0+mig3`. It adds the RTX Pro
-MIG-disabled/64+ GiB admission repair and prevents earning-only Wan Animate and
-video upscalers from being offered as unsupported local Create operations.
+This command installs package `0.1.0+mig4`, SHA-256
+`dd138c1630a5bb4c1b98399e6704ec4af0a5c11a3041fe9bbd45d0eae8665612`.
+It includes the RTX Pro MIG-disabled/64+ GiB admission repair, the tested Create
+correction, and the safe-boundary earning repair.
 
 ## 1. Check your machine
 
@@ -68,8 +69,8 @@ test "$ID:$VERSION_ID:$(uname -m)" = "ubuntu:24.04:x86_64" || { echo "Only Ubunt
 sudo apt-get update
 sudo apt-get install -y ca-certificates curl
 d=$(mktemp -d)
-curl --fail --location --proto "=https" --proto-redir "=https" --tlsv1.2 --retry 3 --connect-timeout 20 --max-time 180 -o "$d/install-public.sh" https://github.com/tonyramosyt-cyber/gamerhash-linux-installer/releases/download/demo-0.1.0-20260916-createfix/install-public.sh
-printf "%s  %s\n" 008fc575bfa1a5b494ec92c9f7d6f2c0d78a4bdd949ec85f02c70d6302e61d94 "$d/install-public.sh" | sha256sum -c -
+curl --fail --location --proto "=https" --proto-redir "=https" --tlsv1.2 --retry 3 --connect-timeout 20 --max-time 180 -o "$d/install-public.sh" https://github.com/tonyramosyt-cyber/gamerhash-linux-installer/releases/download/demo-0.1.0-20260917-earning-stability/install-public.sh
+printf "%s  %s\n" 1779a23f002c88338bf8ffc0d11668aaf60cd72e85b0187abdcb5cebc498fbc9 "$d/install-public.sh" | sha256sum -c -
 bash "$d/install-public.sh"
 '
 ```
@@ -179,15 +180,21 @@ ghlinuxctl --json status
 Vendor approval/wait-list status and job demand remain authoritative. A local-use
 machine may be AI READY without being AI OPTIMAL or approved to earn. Earning
 support never guarantees a paid assignment. Compatible local Create remains
-separate. Laptop battery, games/competing GPU work, unsafe temperature and local
-Create can pause earning. Authentication expiry requires human login again.
+separate. Authentication expiry requires human login again.
 
-The September 16 RTX Pro observation reached signed-in Ready with 26 recommended
-earning models, seven LoRAs, zero skipped requirements and active vendor network
-traffic, but received zero jobs. The local logs did not show an authentication,
-version or requirements rejection. That cannot distinguish no marketplace
-assignment from silent vendor-side filtering, and it must not be treated as an
-earnings guarantee. See VALIDATION.md for the precise evidence.
+Laptop battery, games/competing GPU work, unsafe temperature and local Create can
+pause earning. Ordinary competing-GPU, battery, and network pauses now latch while
+a vendor worker is starting or generating, and apply only after Ready/Idle. Local
+Create likewise waits for that safe boundary instead of interrupting paid work.
+Temperature, driver, storage, and other hardware-safety faults remain immediate.
+
+Focused RTX 4090 acceptance passed five sequential Qwen image-edit operations,
+one local operation each through RealESRGAN Video x2/x4, FlashVSR and BGE, one
+Create-versus-earning transition, and one service restart. One post-fix real
+WhisperLargeV3 assignment completed and was credited. Marketplace assignments
+were not observed for the three video-upscale routes or BGE in the bounded window.
+These facts demonstrate specific paths, not future marketplace demand or earnings.
+See VALIDATION.md.
 
 ## 7. Status, recovery, upgrade and uninstall
 
@@ -241,9 +248,10 @@ X11 desktop session; no blanket Wayland/compositor qualification is claimed.
 If rendering/browser launch fails, first confirm Firefox opens normally and the
 desktop has a default browser; do not disable its sandbox.
 
-The bundled vendor generation is pinned to 0.85.4. Newer Windows releases exist,
-but the current zero-job observation produced no `OldVersion` response; version
-age is a hypothesis, not a proven earning failure.
+The bundled vendor generation is pinned to 0.85.4. Version drift was reviewed,
+but the installed video 0.8.2 worker passed all three focused local video
+operations and the captured failures coincided with explicit Linux stop requests.
+This release therefore does not upgrade vendor runtimes speculatively.
 
 The public installer may be withdrawn; copies already downloaded cannot be
 recalled. This signed release expires December 31, 2026 UTC. Its public availability
